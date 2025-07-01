@@ -1,3 +1,9 @@
+
+Tambayan Chat is your digital tambayan — a cozy, Filipino-style hangout where you can chat, connect, and make new friends anytime, anywhere. Whether you're here for lighthearted conversations, serious discussions, or just to pass the time, Tambayan Chat offers a warm, welcoming space with a true Pinoy vibe. Join the conversation today!
+
+
+
+
 # Durable Chat App
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/durable-chat-template)
