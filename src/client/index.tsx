@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { usePartySocket } from "partysocket/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -10,12 +10,20 @@ import {
 } from "react-router";
 import { nanoid } from "nanoid";
 
-import { names, type ChatMessage, type Message } from "../shared";
+import { type ChatMessage, type Message } from "../shared";
 
 function App() {
-  const [name] = useState(names[Math.floor(Math.random() * names.length)]);
+  const [name, setName] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const { room } = useParams();
+
+  // Load name from localStorage
+  useEffect(() => {
+    const storedName = localStorage.getItem("chatUserName");
+    if (storedName) {
+      setName(storedName);
+    }
+  }, []);
 
   const socket = usePartySocket({
     party: "chat",
@@ -25,7 +33,6 @@ function App() {
       if (message.type === "add") {
         const foundIndex = messages.findIndex((m) => m.id === message.id);
         if (foundIndex === -1) {
-          // probably someone else who added a message
           setMessages((messages) => [
             ...messages,
             {
@@ -36,9 +43,6 @@ function App() {
             },
           ]);
         } else {
-          // this usually means we ourselves added a message
-          // and it was broadcasted back
-          // so let's replace the message with the new message
           setMessages((messages) => {
             return messages
               .slice(0, foundIndex)
@@ -70,11 +74,58 @@ function App() {
     },
   });
 
+  const handleSetName = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const input = e.currentTarget.elements.namedItem(
+      "userName",
+    ) as HTMLInputElement;
+    const newName = input.value.trim();
+    if (newName) {
+      setName(newName);
+      localStorage.setItem("chatUserName", newName);
+    }
+  };
+
+  if (!name) {
+    return (
+      <div className="container" style={{ marginTop: "25%" }}>
+        <div className="row">
+          <div className="one-third column">
+            <h4><b>Set Your Name</b></h4>
+            <p>Please enter your desired name to join the chat.</p>
+            <form onSubmit={handleSetName}>
+              <input
+                type="text"
+                name="userName"
+                className="u-full-width"
+                placeholder="Enter your name"
+                autoComplete="off"
+                required
+              />
+              <button type="submit" className="button-primary">Join Chat</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="chat container">
       {messages.map((message) => (
         <div key={message.id} className="row message">
-          <div className="two columns user">{message.user}</div>
+          <div
+            className="two columns user"
+            style={{
+              fontWeight: "bold",
+              color: "#2c3e50", // Name color
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {message.user}
+          </div>
           <div className="ten columns">{message.content}</div>
         </div>
       ))}
@@ -92,7 +143,6 @@ function App() {
             role: "user",
           };
           setMessages((messages) => [...messages, chatMessage]);
-          // we could broadcast the message here
 
           socket.send(
             JSON.stringify({
@@ -119,7 +169,7 @@ function App() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+// Render the chat app using React 18+
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Routes>
