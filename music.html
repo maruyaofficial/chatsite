@@ -33,27 +33,19 @@
     input[type="range"] {
       width: 100px;
     }
-    #results div {
-      transition: background 0.3s;
-    }
     #results div:hover {
       background: #333;
     }
   </style>
 </head>
-  
-
 <body>
   <h1>YouTube Music Queue Player</h1>
 
-  <!-- 🔍 Search Input -->
   <input type="text" id="yt-search" placeholder="Search YouTube Music..." style="width: 60%; padding: 10px; border-radius: 5px;" />
   <button onclick="searchYouTube()" style="padding: 10px 15px; background: #00aaff; color: white; border: none; border-radius: 5px;">Search</button>
 
-  <!-- 📃 Search Results -->
   <div id="results" style="max-width: 600px; margin: 20px auto;"></div>
 
-  <!-- 🎶 Player Controls -->
   <div class="player-controls">
     <button onclick="prevTrack()">⏮️</button>
     <button onclick="togglePlayPause()" id="playPauseBtn">▶️</button>
@@ -61,17 +53,13 @@
     <input type="range" id="volumeControl" min="0" max="100" value="50">
   </div>
 
-  <!-- 📜 Queue -->
   <h3>Queue</h3>
   <ul id="queue" style="list-style: none; padding: 0;"></ul>
 
-  <!-- 📺 Hidden YouTube Player -->
   <div id="youtube-player" style="width: 0; height: 0;"></div>
 
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    const API_KEY = "AIzaSyCT5uYssh2bfXO_mOIMTwDVoQ0r5mxsstU"; // Your API key
-
     let player;
     let playerReady = false;
     let queue = [];
@@ -89,9 +77,7 @@
             setVolume(50);
           },
           onStateChange: (event) => {
-            if (event.data === YT.PlayerState.ENDED) {
-              nextTrack();
-            }
+            if (event.data === YT.PlayerState.ENDED) nextTrack();
           }
         }
       });
@@ -102,7 +88,7 @@
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = 'Searching...';
 
-      fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(query)}&key=${API_KEY}`)
+      fetch(`/api/youtube?query=${encodeURIComponent(query)}`)
         .then(res => res.json())
         .then(data => {
           resultsDiv.innerHTML = '';
@@ -111,22 +97,22 @@
             const title = item.snippet.title;
             const thumbnail = item.snippet.thumbnails.default.url;
 
-            const resultItem = document.createElement('div');
-            resultItem.style.display = 'flex';
-            resultItem.style.alignItems = 'center';
-            resultItem.style.marginBottom = '10px';
-            resultItem.style.cursor = 'pointer';
-            resultItem.style.background = '#222';
-            resultItem.style.borderRadius = '5px';
-            resultItem.style.padding = '10px';
+            const div = document.createElement('div');
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.marginBottom = '10px';
+            div.style.cursor = 'pointer';
+            div.style.background = '#222';
+            div.style.borderRadius = '5px';
+            div.style.padding = '10px';
 
-            resultItem.innerHTML = `
+            div.innerHTML = `
               <img src="${thumbnail}" alt="${title}" style="margin-right: 10px; border-radius: 4px;">
               <div>${title}</div>
             `;
 
-            resultItem.onclick = () => addToQueue({ title, videoId });
-            resultsDiv.appendChild(resultItem);
+            div.onclick = () => addToQueue({ title, videoId });
+            resultsDiv.appendChild(div);
           });
         })
         .catch(err => {
@@ -153,11 +139,7 @@
     }
 
     function playCurrent() {
-      if (!playerReady || !queue[currentIndex]) {
-        console.warn("Player not ready or no track loaded.");
-        return;
-      }
-
+      if (!playerReady || !queue[currentIndex]) return;
       player.loadVideoById(queue[currentIndex].videoId);
       isPlaying = true;
       updateQueueDisplay();
@@ -184,7 +166,7 @@
       if (state === YT.PlayerState.PLAYING) {
         player.pauseVideo();
         isPlaying = false;
-      } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.CUED) {
+      } else {
         player.playVideo();
         isPlaying = true;
       }
