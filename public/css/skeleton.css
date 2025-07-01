@@ -37,7 +37,7 @@
 .column,
 .columns {
   width: 100%;
-  float: top-center;
+  float: left;
   box-sizing: border-box;
 }
 
