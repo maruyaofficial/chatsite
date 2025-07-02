@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,7 +7,7 @@
     <meta name="author" content="Maruya Official" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Favicon -->
+    <!-- Favicon (App Icon) -->
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
     <!-- CSS -->
@@ -16,10 +15,10 @@
     <link rel="stylesheet" href="css/skeleton.css" />
     <link rel="stylesheet" href="styles.css" />
 
-    <!-- JavaScript (main app) -->
+    <!-- JavaScript -->
     <script src="/dist/index.js" type="module"></script>
 
-    <!-- Navigation -->
+    <!-- Header Navigation Tabs -->
     <nav style="background-color: #111; padding: 12px 20px; color: white; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; width: 100%; z-index: 999;">
       <div style="font-weight: bold; font-size: 18px;">Tambayan Chat</div>
       <div style="flex: 1; display: flex; justify-content: center;">
@@ -31,11 +30,14 @@
     </nav>
     <div style="height: 60px;"></div>
   </head>
-
+      
   <body>
+ ========================================================================================================================================================================================================================================================================
+
     <div class="container" style="width: 95%; height: 100%;">
       <div class="row" style="height: 100%;">
         <div class="one-third column" style="margin-top: 15%;">
+        
           <h4><b>Tambayan Chat</b>, made by <b>Maruya Official</b></h4>
           <p>
             Tambayan Chat is your digital tambayan. You can Post/chat anonymously — a cozy,
@@ -51,41 +53,29 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <footer style="background-color: #111; color: #ccc; text-align: center; padding: 20px; font-size: 14px; margin-top: 40px;">
       <div class="container">
-        <p><b>Tambayan Chat</b> © 2025 - Built with ❤️ by 
-          <a href="https://github.com/akirachoi01" style="color: #00aaff; text-decoration: none;">Maruya Official</a>
-        </p>
+        <p><b>Tambayan Chat</b> © 2025 - Built with ❤️ by <a href="https://github.com/akirachoi01" style="color: #00aaff; text-decoration: none;">Maruya Official</a></p>
         <p>Made for Filipinos, by Filipinos. Connect. Chill. Chat.</p>
         <a href="privacy.html">Privacy Policy</a>
       </div>
     </footer>
 
-    <!-- Floating Music Player Button -->
     <div id="musicPlayerDrawerBtn" title="Open Music Player">🎧</div>
 
-    <!-- Music Player Drawer -->
     <div id="musicPlayerDrawer">
       <div id="musicPlayerHeader">
         <span>🎵 Now Playing</span>
         <button onclick="closeMusicPlayerDrawer()">✖</button>
       </div>
-
-      <div style="padding: 15px; overflow-y: auto;">
-        <audio id="audioPlayer" controls style="width: 100%;">
-          <source id="audioSource" src="songs/kaboses.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
-        <ul id="playlist" style="list-style-type: none; padding-left: 0; margin-top: 10px;">
-          <li data-src="songs/kaboses.mp3" style="cursor:pointer; padding: 6px;">🎶 Kaboses - OC Records</li>
-          <li data-src="songs/byahe.mp3" style="cursor:pointer; padding: 6px;">🚐 Byahe - John Roa</li>
-          <li data-src="songs/tagpuan.mp3" style="cursor:pointer; padding: 6px;">💑 Tagpuan - Moira</li>
-        </ul>
-      </div>
+      <iframe 
+        src="https://player.tambayan-chat.site" 
+        frameborder="0"
+        allow="autoplay; encrypted-media; fullscreen; accelerometer; gyroscope; clipboard-write; web-share"
+        allowfullscreen>
+      </iframe>
     </div>
 
-    <!-- Styles for Drawer & Player -->
     <style>
       #musicPlayerDrawerBtn {
         position: fixed;
@@ -123,6 +113,11 @@
       #musicPlayerDrawer.open {
         right: 0;
       }
+      #musicPlayerDrawer iframe {
+        flex: 1;
+        width: 100%;
+        border: none;
+      }
       #musicPlayerHeader {
         display: flex;
         justify-content: space-between;
@@ -146,30 +141,14 @@
       }
     </style>
 
-    <!-- JavaScript for Drawer & Playlist -->
     <script>
       const musicPlayerDrawer = document.getElementById('musicPlayerDrawer');
-      const playerButton = document.getElementById('musicPlayerDrawerBtn');
-
-      playerButton.onclick = () => {
+      document.getElementById('musicPlayerDrawerBtn').onclick = function () {
         musicPlayerDrawer.classList.add('open');
       };
-
       function closeMusicPlayerDrawer() {
         musicPlayerDrawer.classList.remove('open');
       }
-
-      const player = document.getElementById('audioPlayer');
-      const source = document.getElementById('audioSource');
-      const playlistItems = document.querySelectorAll('#playlist li');
-
-      playlistItems.forEach(item => {
-        item.addEventListener('click', function () {
-          source.src = this.getAttribute('data-src');
-          player.load();
-          player.play();
-        });
-      });
     </script>
   </body>
 </html>
