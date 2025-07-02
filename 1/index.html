@@ -1,0 +1,26 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tambayan Chat - Music Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>🎶 Tambayan Chat Playlist</h2>
+    <div id="music-player">
+      <div id="now-playing">Now Playing: None</div>
+      <audio id="audio-player" controls></audio>
+      <div class="controls">
+        <button onclick="prevTrack()">⏮ Prev</button>
+        <button onclick="nextTrack()">Next ⏭</button>
+      </div>
+      <ul id="playlist"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
