@@ -32,6 +32,85 @@
   </head>
 
   <body>
+    <div id="music-player" style="background: #222; color: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); max-width: 500px;">
+  <h5>🎶 Tambayan Playlist</h5>
+  <div id="now-playing" style="margin-bottom: 10px;">Now Playing: None</div>
+  
+  <audio id="audio-player" controls style="width: 100%; border-radius: 8px;"></audio>
+  
+  <div style="margin-top: 10px; display: flex; justify-content: space-between;">
+    <button onclick="prevTrack()" style="padding: 8px 12px; background: #444; color: white; border: none; border-radius: 5px;">⏮ Prev</button>
+    <button onclick="nextTrack()" style="padding: 8px 12px; background: #444; color: white; border: none; border-radius: 5px;">Next ⏭</button>
+  </div>
+
+  <ul id="playlist" style="list-style: none; padding: 0; margin-top: 15px;">
+    <!-- Playlist will auto-populate here -->
+  </ul>
+</div>
+
+<script>
+  const playlist = [
+    { title: "Track 1 - Chill Vibes", src: "music/track1.mp3" },
+    { title: "Track 2 - Coffee Break", src: "music/track2.mp3" },
+    { title: "Track 3 - Sunset Jam", src: "music/track3.mp3" }
+  ];
+
+  let currentTrack = 0;
+  const audioPlayer = document.getElementById('audio-player');
+  const nowPlaying = document.getElementById('now-playing');
+  const playlistUI = document.getElementById('playlist');
+
+  function loadTrack(index, play = true) {
+    currentTrack = index;
+    audioPlayer.src = playlist[index].src;
+    nowPlaying.innerText = "Now Playing: " + playlist[index].title;
+    highlightCurrentTrack();
+    if (play) audioPlayer.play();
+  }
+
+  function nextTrack() {
+    currentTrack = (currentTrack + 1) % playlist.length;
+    loadTrack(currentTrack);
+  }
+
+  function prevTrack() {
+    currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+    loadTrack(currentTrack);
+  }
+
+  function highlightCurrentTrack() {
+    const items = playlistUI.querySelectorAll('li');
+    items.forEach((item, idx) => {
+      if (idx === currentTrack) {
+        item.style.background = '#444';
+        item.style.color = '#00aaff';
+      } else {
+        item.style.background = 'transparent';
+        item.style.color = '#ccc';
+      }
+    });
+  }
+
+  // Build Playlist UI
+  playlist.forEach((track, index) => {
+    const li = document.createElement('li');
+    li.innerText = track.title;
+    li.style.padding = '8px 10px';
+    li.style.cursor = 'pointer';
+    li.onclick = () => loadTrack(index);
+    li.onmouseover = () => li.style.background = '#333';
+    li.onmouseout = () => {
+      if (index !== currentTrack) li.style.background = 'transparent';
+    };
+    playlistUI.appendChild(li);
+  });
+
+  audioPlayer.addEventListener('ended', nextTrack);
+
+  // Auto load first track
+  loadTrack(currentTrack, false);
+</script>
+
     <div class="container" style="width: 95%; height: 100%;">
       <div class="row" style="height: 100%;">
         <div class="one-third column" style="margin-top: 25%;">
