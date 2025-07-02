@@ -1,0 +1,13 @@
+name = "tambayan-visitor-count"
+main = "index.js"
+compatibility_date = "2025-07-01"
+
+# Replace with your actual Cloudflare account and KV IDs
+    "kv_namespaces": [{
+                    "binding": "KV_BINDING",
+                    "id": "e64bb1bc20144acd960090a721e8dec1"
+                 }]
+# Optional: custom route
+# routes = [
+#   { pattern = "tambayan-chat.site/visitor-count", zone_id = "your-zone-id" }
+# ]
