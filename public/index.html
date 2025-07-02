@@ -32,11 +32,10 @@
   </head>
 
   <body>
-   <div style="background-color: #111; padding: 12px 20px; color: white; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; width: 100%; z-index: 999;">
-      <div style="font-weight: bold; font-size: 18px;">Tambayan Chat</div>
+   <div style="background-color: #111; padding: 12px 20px; color: white; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; width: 100%;">
+   
       <div style="flex: 1; display: flex; justify-content: center;">
-         <div id="mp3playtlistHeader">
-        <span>MP3 PLAYER</span>
+          <div style="font-weight: bold; font-size: 18px;">MP3 Player</div>
         </div>
       <iframe 
         src="https://player.tambayan-chat.site/" 
@@ -46,7 +45,7 @@
       </iframe>
          <style>
      
-      #mp3playtlistDrawer {
+      #mp3playtlist {
         position: fixed;
         right: -100%;
         top: 0;
@@ -61,28 +60,12 @@
         flex-direction: column;
         transition: right 0.3s ease-in-out;
       }
-     
-      #mp3playtlistDrawer iframe {
+           #mp3playtlist iframe {
         flex: 1;
         width: 100%;
         border: none;
       }
-      #mp3playtlistHeader {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 16px;
-        background-color: #222;
-        font-size: 18px;
-        border-bottom: 1px solid #333;
-      }
-      #mp3playtlistHeader button {
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-      }
+     
       @media (max-width: 300px) {
         #mp3playtlistDrawer {
           width: 80%;
@@ -91,10 +74,10 @@
     </style>
 
     <script>
-      const mp3playtlistDrawer = document.getElementById('mp3playtlistDrawer');
-      document.getElementById('mp3playtlistDrawerBtn').onclick = function () {
-        mp3playtlistDrawer.classList.add('open');
-      };
+      const mp3playtlist = document.getElementById('mp3playtlist');
+      document.getElementById('mp3playtlist').onclick = function () {
+        mp3playtlist.classList.add('open');
+      
       }
     </script>
       </div>
