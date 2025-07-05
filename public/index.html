@@ -155,6 +155,28 @@
       }
     </script>
  
-    
+    <!-- Consent Modal -->
+<div id="consentModalBackdrop" class="consent-modal-backdrop">
+  <div class="consent-modal brand-tambayan">
+    <h2>Tambayan Privacy Notice</h2>
+    <p>We use cookies to personalize features and improve your experience. By continuing, you agree to our cookie policy.</p>
+    <button onclick="acceptConsent()">I Accept</button>
+  </div>
+</div>
   </body>
+  <script>
+  function acceptConsent() {
+    localStorage.setItem("consentAccepted", "yes");
+    document.getElementById("consentModalBackdrop").style.display = "none";
+  }
+
+  // Show the modal only if user hasn't accepted yet
+  window.addEventListener("load", () => {
+    if (localStorage.getItem("consentAccepted") !== "yes") {
+      document.getElementById("consentModalBackdrop").style.display = "flex";
+    } else {
+      document.getElementById("consentModalBackdrop").style.display = "none";
+    }
+  });
+</script>
 </html>
